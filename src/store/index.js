@@ -1,36 +1,18 @@
-import { createStore } from "redux";
+import { configureStore } from "@reduxjs/toolkit";
+import counterReducer from "./counterSlice";
+import authReducer from "./authSlice";
 
-const counterReducer = (state = { counter: 0, showCounter: false }, action) => {
-  if (action.type === "increment") {
-    // Objects in reducer will not merge the existing state it will overwrite the existing state and returns new state.
-    // Never mutate the existing state in redux need to return new state in redux.
-    // Always create a brand new array or objects.
-    return {
-      counter: state.counter + 1,
-      showCounter: state.showCounter,
-    };
-  }
-  if (action.type === "increase") {
-    return {
-      counter: state.counter + action.payload,
-      showCounter: state.showCounter,
-    };
-  }
-  if (action.type === "decrement") {
-    return {
-      counter: state.counter - 1,
-      showCounter: state.showCounter,
-    };
-  }
-  if (action.type === "toggle") {
-    return {
-      showCounter: !state.showCounter,
-      counter: state.counter,
-    };
-  }
-
-  return state;
-};
-const store = createStore(counterReducer);
+// Create the Redux store using configureStore
+// The reducer property is an object where each key represents a slice of state
+// and each value is the corresponding reducer function for that slice.
+// This allows you to manage multiple slices of state in a single store.
+const store = configureStore({
+  // The state will have two top-level keys: 'counter' and 'auth'
+  // Each key is managed by its respective reducer
+  reducer: {
+    counter: counterReducer, // Handles state and actions related to the counter
+    auth: authReducer, // Handles state and actions related to authentication
+  },
+});
 
 export default store;
